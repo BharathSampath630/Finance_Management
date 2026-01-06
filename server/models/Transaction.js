@@ -93,10 +93,15 @@ transactionSchema.index({ date: -1 });
 
 // Virtual for formatted amount
 transactionSchema.virtual('formattedAmount').get(function() {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD' // Will be dynamic based on account currency
-  }).format(Math.abs(this.amount));
+  try {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD' // Default to USD, will be dynamic based on account currency later
+    }).format(Math.abs(this.amount));
+  } catch (error) {
+    // Fallback if currency formatting fails
+    return `USD ${Math.abs(this.amount).toFixed(2)}`;
+  }
 });
 
 // Method to determine if transaction is unusual (for AI alerts)

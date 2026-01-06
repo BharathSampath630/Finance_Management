@@ -53,10 +53,15 @@ accountSchema.index({ userId: 1, isActive: 1 });
 
 // Virtual for formatted balance
 accountSchema.virtual('formattedBalance').get(function() {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: this.currency
-  }).format(this.balance);
+  try {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: this.currency || 'USD'
+    }).format(this.balance);
+  } catch (error) {
+    // Fallback if currency formatting fails
+    return `${this.currency || 'USD'} ${this.balance.toFixed(2)}`;
+  }
 });
 
 // Ensure virtual fields are serialized

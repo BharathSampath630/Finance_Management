@@ -107,8 +107,9 @@ export default function TransactionsPage() {
         date: new Date().toISOString().split('T')[0]
       });
       fetchData();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to create transaction:', error);
+      alert(`Failed to create transaction: ${error.response?.data?.message || error.message}`);
     }
   };
 
