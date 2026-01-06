@@ -43,6 +43,27 @@ const accountSchema = new mongoose.Schema({
   icon: {
     type: String,
     default: 'wallet'
+  },
+  // Banking integration fields
+  plaidAccountId: {
+    type: String,
+    default: null
+  },
+  plaidAccessToken: {
+    type: String,
+    default: null
+  },
+  plaidItemId: {
+    type: String,
+    default: null
+  },
+  isPlaidLinked: {
+    type: Boolean,
+    default: false
+  },
+  lastSyncDate: {
+    type: Date,
+    default: null
   }
 }, {
   timestamps: true

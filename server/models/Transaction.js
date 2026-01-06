@@ -80,6 +80,15 @@ const transactionSchema = new mongoose.Schema({
   balanceAfter: {
     type: Number,
     required: true
+  },
+  // Banking integration fields
+  plaidTransactionId: {
+    type: String,
+    default: null
+  },
+  isPlaidSynced: {
+    type: Boolean,
+    default: false
   }
 }, {
   timestamps: true

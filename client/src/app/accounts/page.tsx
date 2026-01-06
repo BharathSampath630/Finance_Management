@@ -15,7 +15,7 @@ import {
   PiggyBank,
   Building,
   Banknote
-} from 'lucide-react';
+import PlaidLink from '@/components/Banking/PlaidLink';
 
 interface Account {
   _id: string;
@@ -130,6 +130,14 @@ export default function AccountsPage() {
             Add Account
           </button>
         </div>
+
+        {/* Banking Integration */}
+        <PlaidLink 
+          onSuccess={(publicToken, metadata) => {
+            console.log('Bank connected:', metadata.institution.name);
+            fetchAccounts(); // Refresh accounts after connection
+          }}
+        />
 
         {/* Create Account Form */}
         {showCreateForm && (

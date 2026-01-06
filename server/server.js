@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const syncService = require('./services/syncService');
 require('dotenv').config();
 
 const app = express();
@@ -38,6 +39,8 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/finance-p
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/accounts', require('./routes/accounts'));
 app.use('/api/transactions', require('./routes/transactions'));
+app.use('/api/analytics', require('./routes/analytics'));
+app.use('/api/banking', require('./routes/banking'));
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -65,4 +68,11 @@ app.use('*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
+  
+  // Start automatic transaction sync every 30 minutes
+  if (process.env.NODE_ENV !== 'test') {
+    setTimeout(() => {
+      syncService.startAutoSync(30); // Sync every 30 minutes
+    }, 5000); // Wait 5 seconds after server start
+  }
 });
