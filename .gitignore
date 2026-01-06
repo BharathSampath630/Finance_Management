@@ -53,6 +53,7 @@ Thumbs.db
 # Database
 *.db
 *.sqlite
+mongodb-data/
 
 # Temporary files
 *.tmp
